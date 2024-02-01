@@ -1,12 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&family=Calligraffitti&display=swap');
 
-/* 
+body {
+    margin-top: 100px;
+    background: #6868AC
+}
+ul {
+    padding: 0;
+}
+.leftTask{
+    color: aliceblue;
+}
+ul li {
+    border: 1px solid #FFB650;
+    list-style: none;
+    padding: 5px;
+    margin-top: 10px;
+    
+}
+li {
+    background-color: #fdfaf6;
+}
+.fa-eraser {
+    float: right;
+    align-items: center;
+    margin-left: 5px;
+    padding: 5px;
+}
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+h1 {
+    font-family: 'Calligraffitti', cursive;
+    font-weight: 900;
+    text-shadow: -15px 5px 20px #ced0d3;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: #F9f1cc;
+    text-shadow: 1px 1px 0px #FFB650, 
+        2px 2px 0px #FFD662, 
+        4px 4px 0px  #FF80BF, 
+        6px 6px 0px #db80a9, 
+        8px 8px 0px #6868AC, 
+        10px 10px 0px #90B1E0;
+}
 
-*/
+input {
+    border: none;
+    width: 100%;
+}
