@@ -4,79 +4,106 @@ import React, { useEffect,useState } from "react";
 const Home = () => {
 	const [inputValue, setInputValue] = useState("")
 	const [todos, setTodos] = useState([])
+
+	// Updatelist - agregar nuevas tareas 
+	const updateList = (e) => {
+		if (e) {
+			if (e?.key != "Enter") {
+				return null
+			} 
+		}
+		
+		if (inputValue != "") {
+			setTodos(todos.concat({ label: inputValue, done: false }));
+			setInputValue("");
+		}
+	  };
+
+
+
+	const getList = () => {
+		fetch("https://playground.4geeks.com/apis/fake/todos/user/NoeAV")
+		  .then((response) => response.json())
+		  .then((data) => setTodos(data));
+	  };
 	
 
-
-	// const actualizarListaEnServidor = (nuevasTareas) => {
-	// 	fetch('https://psychic-capybara-qwv7qrgw6xx2jrg-3000.app.github.dev/', {
-	// 	  method: "PUT",
-	// 	  body: JSON.stringify(nuevasTareas),
-	// 	  headers: {
-	// 		"Content-Type": "application/json"
-	// 	  }
-	// 	})
-	// 	.then(resp => resp.json())
-	// 	.then(data => console.log('Lista actualizada en el servidor:', data))
-	// 	.catch(error => console.error('Error al actualizar la lista en el servidor:', error));
-	//   };
-	  
-	//   const agregarNuevaTarea = () => {
-	// 	// Añadir la nueva tarea al estado 'todos'
-	// 	setTodos(todos.concat(inputValue));
-	  
-	// 	// Realizar una solicitud PUT para actualizar la lista en el servidor
-	// 	actualizarListaEnServidor(todos.concat(inputValue));
-	  
-	// 	// Limpiar el campo de entrada después de agregar la tarea
-	// 	setInputValue("");
-	//   };
-	  
-	//   const eliminarTarea = (index) => {
-	// 	// Filtrar las tareas para eliminar la tarea en el índice proporcionado
-	// 	const nuevasTareas = todos.filter((_, currentIndex) => index !== currentIndex);
-	  
-	// 	// Actualizar el estado 'todos' con las nuevas tareas
-	// 	setTodos(nuevasTareas);
-	  
-	// 	// Realizar una solicitud PUT para actualizar la lista en el servidor
-	// 	actualizarListaEnServidor(nuevasTareas);
-	//   };
+	
+	const deleteTodo = (index) => {
+		if (todos.length === 1) {
+			setTodos([{ label: "example task", done: false }])
+		} else (
+			setTodos(todos.filter((item, i) => i !== index))
+		)
+	  };
 
 
+	const updateListOnServer = (newList) => {
+		fetch("https://playground.4geeks.com/apis/fake/todos/user/NoeAV", {
+		  method: "PUT",
+		  body: JSON.stringify(newList),
+		  headers: {
+			"Content-Type": "application/json",
+		  },
+		})
+		  .then((resp) => resp.json())
+		  .then((data) => console.log("Lista actualizada en el servidor:", data))
+		  .catch((error) => console.error("Error al actualizar la lista en el servidor:", error)
+		);
+	  };
+	
+	
+	  useEffect(() => {
+		getList();
+	  }, []);
 
-	return (
+	  useEffect(() => {
+		updateListOnServer(todos);
+	  }, [todos]);
+
+
+	  return (
 		<div className="container">
-			<h1>Todo list using React + Fetch </h1>
-			<ul>
-				<li>
-					<input type="text" 
-					// event = e. Así que el "e.target.value" es la version corta de "event.target.value"
-					// el "value" de los inputs/events hace referencia a literalmente lo que estamos escribiendo en el input
-					onChange={(e) => setInputValue(e.target.value)} 
-					value={inputValue}
-					onKeyPress={(e) => 
-						e.key === "Enter" 
-						? agregarNuevaTarea()
-						: null
-					}
-					placeholder="What do you need to do?"></input>
-				</li>
+		  <h1>Todo list using React + Fetch </h1>
+		  <ul>
+			<li>
+			  <div className="d-flex">
+				<input
+				style={{height:"39.8px"}}
+				  type="text"
+				  onChange={(e) => setInputValue(e.target.value)}
+				  value={inputValue}
+				  placeholder="What do you need to do?"
+				  onKeyDown={(e) => updateList(e)}
+				></input>
 				
-				{todos.map((item, index) => (
-					<li> 
-						{item} {" "} <i className="fa-solid fa-eraser" style={{color: "#FFB650"}} 
-						onClick={() => 
-							eliminarTarea (index)	
-						}></i>
-					</li>
-				))}
+				<button type="button" className="btn btn-outline-secondary d-flex" style={{height:"39.8px"}} >
+				<i className="fa-solid fa-wand-sparkles fa-beat"
+					style={{ color: "#FFB650" }}
+					onClick={() => updateList()}
+				  ></i>
+				  Add 
+				</button>
 
-				
-			
+
+			  </div>
+			</li>
+			<ul className="container mt-4 listOfTodos justify-content-center">
+			  {todos.map((item, i) => (
+				<li key={i}>
+				  {item.label}{" "}
+				  <i
+					className="fa-solid fa-trash-can"
+					style={{ color: "#FFB650" }}
+					onClick={() => deleteTodo(i)}
+				  ></i>
+				</li>
+			  ))}
 			</ul>
-			<div className="leftTask"> {todos.length} left.</div>
-		</div >
-	);
-};
+		  </ul>
+		  <div className="leftTask">{todos.length} left.</div>
+		</div>
+	  );
+	};
 
 export default Home;

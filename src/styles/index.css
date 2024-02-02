@@ -20,7 +20,13 @@ ul li {
 li {
     background-color: #fdfaf6;
 }
-.fa-eraser {
+.fa-trash-can {
+    float: right;
+    align-items: center;
+    margin-left: 5px;
+    padding: 5px;
+}
+.fa-wand-sparkles.fa-beat  {
     float: right;
     align-items: center;
     margin-left: 5px;
@@ -45,4 +51,11 @@ h1 {
 input {
     border: none;
     width: 100%;
+}
+
+button {
+    border-radius: 12px;
+    align-items: center;
+    margin-left: 5px;
+    padding: 5px;
 }
